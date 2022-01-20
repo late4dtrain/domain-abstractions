@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Title>Domain Abstractions</Title>
+    <Title>Late4dTrain.Domain.Abstractions</Title>
     <Authors>Late4dTrain;GabSoulavy</Authors>
     <Description>Domain Abstractions Project</Description>
     <Copyright>MIT</Copyright>
