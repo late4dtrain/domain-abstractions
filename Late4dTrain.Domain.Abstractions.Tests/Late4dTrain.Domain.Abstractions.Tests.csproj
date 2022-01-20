@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>Late4dTrain.DDD.Domain.Abstractions.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Late4dTrain.DDD.Domain.Abstractions\Late4dTrain.DDD.Domain.Abstractions.csproj" />
+    <ProjectReference Include="..\Late4dTrain.Domain.Abstractions\Late4dTrain.Domain.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
