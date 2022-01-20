@@ -5,6 +5,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>Late4dTrain.DDD.Domain.Abstractions</RootNamespace>
+    <Title>Domain Abstractions</Title>
+    <Authors>Late4dTrain;GabSoulavy</Authors>
+    <Description>Domain Abstractions Project</Description>
+    <Copyright>MIT</Copyright>
+    <PackageProjectUrl>https://github.com/late4dtrain/domain-abstractions</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/late4dtrain/domain-abstractions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Domain Driven Design</PackageTags>
+    <PackageId>Late4dTrain.Domain.Abstractions</PackageId>
+    <Version>0.0.1</Version>
+    <AssemblyVersion>0.0.1</AssemblyVersion>
+    <FileVersion>0.0.1</FileVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
 </Project>
