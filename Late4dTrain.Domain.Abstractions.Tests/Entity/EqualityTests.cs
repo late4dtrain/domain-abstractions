@@ -1,4 +1,4 @@
-namespace Late4dTrain.DDD.Domain.Abstractions.Tests.Entity;
+namespace Late4dTrain.Domain.Abstractions.Tests.Entity;
 
 using System;
 

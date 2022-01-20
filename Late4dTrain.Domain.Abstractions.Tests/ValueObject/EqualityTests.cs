@@ -1,8 +1,10 @@
-﻿namespace Late4dTrain.DDD.Domain.Abstractions.Tests.ValueObject;
+﻿namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject;
 
 using AutoFixture.Xunit2;
 
 using FluentAssertions;
+
+using Late4dTrain.Domain.Abstractions.Tests.ValueObject;
 
 using Xunit;
 

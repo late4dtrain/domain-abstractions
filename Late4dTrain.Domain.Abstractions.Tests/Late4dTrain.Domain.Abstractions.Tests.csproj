@@ -6,7 +6,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Late4dTrain.DDD.Domain.Abstractions.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

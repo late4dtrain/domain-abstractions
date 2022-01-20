@@ -1,6 +1,8 @@
-﻿namespace Late4dTrain.DDD.Domain.Abstractions.Tests.Entity;
+﻿namespace Late4dTrain.Domain.Abstractions.Tests.Entity;
 
 using System;
+
+using Abstractions;
 
 internal class TestEntityWithoutDomainEvent
     : Entity<Guid>.WithoutDomainEvent

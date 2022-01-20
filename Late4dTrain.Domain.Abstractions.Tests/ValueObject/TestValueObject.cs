@@ -1,4 +1,4 @@
-﻿namespace Late4dTrain.DDD.Domain.Abstractions.Tests.ValueObject;
+﻿namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject;
 
 using ValueObject = Abstractions.ValueObject;
 

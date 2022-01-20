@@ -1,6 +1,6 @@
 ﻿// Based on vkhorikov ValueObject type
 // https://github.com/vkhorikov/CSharpFunctionalExtensions/blob/c66b80ba70/CSharpFunctionalExtensions/ValueObject/ValueObject.cs
-namespace Late4dTrain.DDD.Domain.Abstractions;
+namespace Late4dTrain.Domain.Abstractions;
 
 using System.Diagnostics.CodeAnalysis;
 

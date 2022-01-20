@@ -1,4 +1,4 @@
-﻿namespace Late4dTrain.DDD.Domain.Abstractions;
+﻿namespace Late4dTrain.Domain.Abstractions;
 
 public interface IDomainEvent
 {
