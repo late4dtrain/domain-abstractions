@@ -10,7 +10,6 @@
     <Description>Domain Abstractions Project</Description>
     <Copyright>MIT</Copyright>
     <PackageProjectUrl>https://github.com/late4dtrain/domain-abstractions</PackageProjectUrl>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/late4dtrain/domain-abstractions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Domain Driven Design</PackageTags>
