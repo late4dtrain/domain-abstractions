@@ -1,14 +1,15 @@
-﻿namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject;
-
-using ValueObject = Abstractions.ValueObject;
-
-internal class TestValueObject : ValueObject.AsClass
+﻿namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject
 {
-    public TestValueObject(int first, int second, int third) => (First, Second, Third) = (first, second, third);
+    using ValueObject = Abstractions.ValueObject;
 
-    public int First { get; }
+    internal class TestValueObject : ValueObject.AsClass
+    {
+        public TestValueObject(int first, int second, int third) => (First, Second, Third) = (first, second, third);
 
-    public int Second { get; }
+        public int First { get; }
 
-    public int Third { get; }
+        public int Second { get; }
+
+        public int Third { get; }
+    }
 }
