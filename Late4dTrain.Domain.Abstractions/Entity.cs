@@ -10,7 +10,7 @@ public static class Entity<TId>
     {
         public List<TDomainEvent> Events => new();
 
-        public TId Id { get; protected init; } = default!;
+        public abstract TId Id { get; protected init; }
 
         protected bool Equals(WithDomainEvent<TDomainEvent> other) =>
             EqualityComparer<TId>.Default.Equals(Id, other.Id);
@@ -23,7 +23,7 @@ public static class Entity<TId>
             return other.GetType() == GetType() && Equals(other);
         }
 
-        public override int GetHashCode() => EqualityComparer<TId>.Default.GetHashCode(Id ?? throw new InvalidOperationException());
+        public override int GetHashCode() => EqualityComparer<TId>.Default.GetHashCode(Id!);
 
         public static bool operator ==(WithDomainEvent<TDomainEvent>? left, WithDomainEvent<TDomainEvent>? right) =>
             Equals(left, right);
@@ -36,7 +36,7 @@ public static class Entity<TId>
     [SuppressMessage("Usage", "S4035", Justification = "Intentional override for Entity comparison")]
     public abstract class WithoutDomainEvent : IEntity<TId>
     {
-        public TId Id { get; protected init; } = default!;
+        public abstract TId Id { get; protected init; }
 
         protected bool Equals(WithoutDomainEvent other) => EqualityComparer<TId>.Default.Equals(Id, other.Id);
 
@@ -48,7 +48,7 @@ public static class Entity<TId>
             return other.GetType() == GetType() && Equals(other);
         }
 
-        public override int GetHashCode() => EqualityComparer<TId>.Default.GetHashCode(Id ?? throw new InvalidOperationException());
+        public override int GetHashCode() => EqualityComparer<TId>.Default.GetHashCode(Id!);
 
         public static bool operator ==(WithoutDomainEvent? left, WithoutDomainEvent? right) => Equals(left, right);
 
