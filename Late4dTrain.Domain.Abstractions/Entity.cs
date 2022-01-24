@@ -10,7 +10,7 @@ public static class Entity<TId>
     {
         public List<TDomainEvent> Events => new();
 
-        public abstract TId Id { get; protected init; }
+        public abstract TId Id { get; protected set; }
 
         protected bool Equals(WithDomainEvent<TDomainEvent> other) =>
             EqualityComparer<TId>.Default.Equals(Id, other.Id);
@@ -36,7 +36,7 @@ public static class Entity<TId>
     [SuppressMessage("Usage", "S4035", Justification = "Intentional override for Entity comparison")]
     public abstract class WithoutDomainEvent : IEntity<TId>
     {
-        public abstract TId Id { get; protected init; }
+        public abstract TId Id { get; protected set; }
 
         protected bool Equals(WithoutDomainEvent other) => EqualityComparer<TId>.Default.Equals(Id, other.Id);
 
