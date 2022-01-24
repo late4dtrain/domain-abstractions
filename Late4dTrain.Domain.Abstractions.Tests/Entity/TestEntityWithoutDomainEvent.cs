@@ -10,6 +10,8 @@ internal class TestEntityWithoutDomainEvent
     public TestEntityWithoutDomainEvent(Guid id, string name) => (Id, Name) = (id, name);
 
     public string Name { get; }
+
+    public sealed override Guid Id { get; protected init; }
 }
 
 public class TestEntityCreated : DomainEvent
