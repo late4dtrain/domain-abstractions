@@ -15,5 +15,5 @@ internal class TestEntityWithDomainEvent
 
     public string Name { get; }
 
-    public sealed override Guid Id { get; protected init; }
+    public sealed override Guid Id { get; protected set; }
 }
