@@ -6,6 +6,8 @@ using Xunit;
 
 namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject
 {
+    using Data;
+
     public class EqualityTests
     {
         [Theory]
