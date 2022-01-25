@@ -1,8 +1,8 @@
-﻿namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject
+﻿namespace Late4dTrain.Domain.Abstractions.Tests.ValueObject.Data
 {
     using ValueObject = Abstractions.ValueObject;
 
-    internal class TestValueObject : ValueObject.AsClass
+    internal class TestValueObject : ValueObject
     {
         public TestValueObject(int first, int second, int third) => (First, Second, Third) = (first, second, third);
 

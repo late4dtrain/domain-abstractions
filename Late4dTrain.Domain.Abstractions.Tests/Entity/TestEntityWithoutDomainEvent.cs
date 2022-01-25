@@ -1,19 +1,14 @@
-﻿using System;
-
-namespace Late4dTrain.Domain.Abstractions.Tests.Entity
+﻿namespace Late4dTrain.Domain.Abstractions.Tests.Entity.Data
 {
-    internal class TestEntityWithoutDomainEvent
-        : Entity<Guid>.WithoutDomainEvent
+    using System;
+
+    internal class TestEntity
+        : Entity<Guid>
     {
-        public TestEntityWithoutDomainEvent(Guid id, string name) => (Id, Name) = (id, name);
+        public TestEntity(Guid id, string name) => (Id, Name) = (id, name);
 
         public string Name { get; }
 
         public sealed override Guid Id { get; protected set; }
-    }
-
-    public class TestEntityCreated : DomainEvent
-    {
-        public string EventName => nameof(TestEntityCreated);
     }
 }

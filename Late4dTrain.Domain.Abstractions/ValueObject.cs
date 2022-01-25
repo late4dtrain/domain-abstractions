@@ -5,60 +5,53 @@ namespace Late4dTrain.Domain.Abstractions;
 
 using System.Diagnostics.CodeAnalysis;
 
-public static class ValueObject
+[SuppressMessage("Usage", "S3875", Justification = "Intentional override for Entity comparison")]
+[SuppressMessage("Usage", "S4035", Justification = "Intentional override for Entity comparison")]
+public abstract class ValueObject : IValueObject
 {
-    public abstract record AsRecord : IValueObject
-    {
-    }
+    private int? _cachedHashCode;
 
-    [SuppressMessage("Usage", "S3875", Justification = "Intentional override for Entity comparison")]
-    [SuppressMessage("Usage", "S4035", Justification = "Intentional override for Entity comparison")]
-    public abstract class AsClass : IValueObject
+    private int CachedHashCode
     {
-        private int? _cachedHashCode;
-
-        private int CachedHashCode
+        get
         {
-            get
-            {
-                _cachedHashCode ??= GetPropertyValues()
-                    .Aggregate(
-                        1,
-                        (current, obj) =>
+            _cachedHashCode ??= GetPropertyValues()
+                .Aggregate(
+                    1,
+                    (current, obj) =>
+                    {
+                        unchecked
                         {
-                            unchecked
-                            {
-                                return current * 23 + (obj?.GetHashCode() ?? 0);
-                            }
+                            return current * 23 + (obj?.GetHashCode() ?? 0);
                         }
-                    );
-
-                return _cachedHashCode.Value;
-            }
-        }
-
-        protected bool Equals(AsClass other) => GetPropertyValues().SequenceEqual(other.GetPropertyValues());
-
-        private IEnumerable<object?> GetPropertyValues() =>
-            GetType()
-                .GetProperties()
-                .Select(
-                    propertyInfo => propertyInfo
-                        .GetValue(this)
+                    }
                 );
 
-        public override bool Equals(object? obj)
-        {
-            if (obj is not AsClass other) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            return other.GetType() == GetType() && Equals(other);
+            return _cachedHashCode.Value;
         }
-
-        public override int GetHashCode() => CachedHashCode;
-
-        public static bool operator ==(AsClass? left, AsClass? right) => Equals(left, right);
-
-        public static bool operator !=(AsClass? left, AsClass? right) => !Equals(left, right);
     }
+
+    protected bool Equals(ValueObject other) => GetPropertyValues().SequenceEqual(other.GetPropertyValues());
+
+    private IEnumerable<object?> GetPropertyValues() =>
+        GetType()
+            .GetProperties()
+            .Select(
+                propertyInfo => propertyInfo
+                    .GetValue(this)
+            );
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not ValueObject other) return false;
+        if (ReferenceEquals(this, other)) return true;
+
+        return other.GetType() == GetType() && Equals(other);
+    }
+
+    public override int GetHashCode() => CachedHashCode;
+
+    public static bool operator ==(ValueObject? left, ValueObject? right) => Equals(left, right);
+
+    public static bool operator !=(ValueObject? left, ValueObject? right) => !Equals(left, right);
 }
