@@ -2,5 +2,9 @@
 
 public abstract class DomainEvent : IDomainEvent
 {
-    public DateTimeOffset DateOccured => DateTimeOffset.UtcNow;
+    #pragma warning disable ConvertToAutoProperty
+    private readonly DateTimeOffset _dateOccured = DateTimeOffset.UtcNow;
+
+    public DateTimeOffset DateOccured => _dateOccured;
+    #pragma warning restore ConvertToAutoProperty
 }
