@@ -2,5 +2,5 @@
 
 public interface IDomainEvent
 {
-    public DateTimeOffset DateOccured { get; }
+    public DateTimeOffset DateOccurred { get; }
 }
