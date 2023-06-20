@@ -3,5 +3,9 @@
 public abstract class AggregateRoot<TId, TDomainEvent> : Entity<TId>, IAggregateRoot<TDomainEvent>
     where TDomainEvent : IDomainEvent
 {
-    public List<TDomainEvent> Events => new();
+    #pragma warning disable ConvertToAutoProperty
+    private readonly List<TDomainEvent> _domainEvents = new();
+
+    public List<TDomainEvent> Events => _domainEvents;
+    #pragma warning restore ConvertToAutoProperty
 }
