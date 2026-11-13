@@ -1,6 +1,16 @@
 ﻿namespace Late4dTrain.Domain.Abstractions;
 
-public interface IAggregateRoot<TDomainEvent> where TDomainEvent : IDomainEvent
+/// <summary>
+/// Marks an entity as an aggregate root.
+/// </summary>
+public interface IAggregateRoot
 {
-    List<TDomainEvent> Events { get; }
+}
+
+/// <summary>
+/// An aggregate root with a strongly typed identity.
+/// </summary>
+/// <typeparam name="TId">The identity type.</typeparam>
+public interface IAggregateRoot<out TId> : IEntity<TId>, IAggregateRoot
+{
 }

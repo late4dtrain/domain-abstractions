@@ -1,26 +1,51 @@
 ﻿namespace Late4dTrain.Domain.Abstractions;
 
-using System.Diagnostics.CodeAnalysis;
-
-[SuppressMessage("Usage", "S3875", Justification = "Intentional override for Entity comparison")]
-[SuppressMessage("Usage", "S4035", Justification = "Intentional override for Entity comparison")]
-public abstract class Entity<TId> : IEntity<TId>
+/// <summary>
+/// Base class for entities whose identity is assigned at construction and remains stable.
+/// Equality is based on the exact runtime type and identity; other state is ignored.
+/// </summary>
+/// <typeparam name="TId">The identity type. Reference-type IDs should be immutable.</typeparam>
+public abstract class Entity<TId> : IEntity<TId>, IEquatable<Entity<TId>>
 {
-    public abstract TId Id { get; protected set; }
-
-    protected bool Equals(Entity<TId> other) => EqualityComparer<TId>.Default.Equals(Id, other.Id);
-
-    public override bool Equals(object? obj)
+    /// <summary>
+    /// Initializes an entity with its identity.
+    /// </summary>
+    /// <param name="id">The identity. A null reference identity is not allowed; default value-type identities are permitted.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="id"/> is null.</exception>
+    protected Entity(TId id)
     {
-        if (obj is not Entity<TId> other) return false;
-        if (ReferenceEquals(this, other)) return true;
+        if (id is null) throw new ArgumentNullException(nameof(id));
 
-        return other.GetType() == GetType() && Equals(other);
+        Id = id;
     }
 
-    public override int GetHashCode() => EqualityComparer<TId>.Default.GetHashCode(Id!);
+    /// <summary>
+    /// Gets the immutable identity assigned at construction.
+    /// </summary>
+    public TId Id { get; }
 
-    public static bool operator ==(Entity<TId>? left, Entity<TId>? right) => Equals(left, right);
+    /// <inheritdoc />
+    public bool Equals(Entity<TId>? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
 
-    public static bool operator !=(Entity<TId>? left, Entity<TId>? right) => !Equals(left, right);
+        return other.GetType() == GetType() && EqualityComparer<TId>.Default.Equals(Id, other.Id);
+    }
+
+    /// <inheritdoc />
+    public sealed override bool Equals(object? obj) => obj is Entity<TId> other && Equals(other);
+
+    /// <inheritdoc />
+    public sealed override int GetHashCode() => EqualityComparer<TId>.Default.GetHashCode(Id!);
+
+    /// <summary>
+    /// Compares two entities using their identity equality.
+    /// </summary>
+    public static bool operator ==(Entity<TId>? left, Entity<TId>? right) => object.Equals(left, right);
+
+    /// <summary>
+    /// Compares two entities using their identity equality.
+    /// </summary>
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right) => !object.Equals(left, right);
 }

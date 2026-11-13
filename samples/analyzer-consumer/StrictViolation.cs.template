@@ -1,0 +1,13 @@
+namespace AnalyzerConsumer;
+
+using Late4dTrain.Domain.Abstractions;
+
+public sealed class MutableMoney : ValueObject
+{
+    public decimal Amount { get; private set; }
+
+    protected override System.Collections.Generic.IEnumerable<object?> GetEqualityComponents()
+    {
+        yield return Amount;
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "default_agent": "plan",
+    "instructions": [".opencode/instructions/feature-workflow.md"],
+    "mcp": {
+        "servers": {
+            "context7": {
+                "type": "remote",
+                "url": "https://mcp.context7.com/mcp/oauth"
+            }
+        }
+    },
+    "watcher": {
+        "ignore": ["**/bin/**", "**/obj/**", "**/TestResults/**"]
+    },
+    "references": {
+        "route66": {
+            "path": "../route66",
+            "description": "Sibling library used as the reference for OpenCode planning and review conventions; this repository's own targets and contracts take precedence."
+        },
+        "dotnet-runtime": {
+            "repository": "dotnet/runtime",
+            "description": "Runtime source for equality, hashing and reflection; verify API availability against this library's netstandard2.0 target."
+        },
+        "dotnet-docs": {
+            "repository": "dotnet/docs",
+            "description": "Official .NET and C# documentation; this library uses C# 10 and .NET Standard 2.0, with .NET 10 tests."
+        },
+        "xunit": {
+            "repository": "xunit/xunit",
+            "description": "xUnit source and examples; consult the xUnit 2 API matching the test project's package versions."
+        }
+    },
+    "agents": {
+        "plan": {
+            "permissions": [
+                { "action": "edit", "resource": "*", "effect": "deny" },
+                { "action": "edit", "resource": ".agents/plans/feat/*.md", "effect": "allow" },
+                { "action": "edit", "resource": "~/.opencode/plan/*.md", "effect": "allow" },
+                { "action": "shell", "resource": "*", "effect": "ask" }
+            ]
+        }
+    }
+}

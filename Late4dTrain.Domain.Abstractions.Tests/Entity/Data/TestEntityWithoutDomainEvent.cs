@@ -5,10 +5,8 @@
     internal class TestEntity
         : Entity<Guid>
     {
-        public TestEntity(Guid id, string name) => (Id, Name) = (id, name);
+        public TestEntity(Guid id, string name) : base(id) => Name = name;
 
         public string Name { get; }
-
-        public sealed override Guid Id { get; protected set; }
     }
 }

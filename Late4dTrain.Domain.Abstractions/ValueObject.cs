@@ -1,57 +1,58 @@
-﻿// Based on vkhorikov ValueObject type
-// https://github.com/vkhorikov/CSharpFunctionalExtensions/blob/c66b80ba70/CSharpFunctionalExtensions/ValueObject/ValueObject.cs
+﻿namespace Late4dTrain.Domain.Abstractions;
 
-namespace Late4dTrain.Domain.Abstractions;
-
-using System.Diagnostics.CodeAnalysis;
-
-[SuppressMessage("Usage", "S3875", Justification = "Intentional override for Entity comparison")]
-[SuppressMessage("Usage", "S4035", Justification = "Intentional override for Entity comparison")]
-public abstract class ValueObject : IValueObject
+/// <summary>
+/// Base class for immutable value objects with equality defined by explicitly selected components.
+/// </summary>
+public abstract class ValueObject : IValueObject, IEquatable<ValueObject>
 {
-    private int? _cachedHashCode;
+    /// <summary>
+    /// Gets the immutable values that determine equality, in a stable order.
+    /// Components should themselves be immutable. If a sequence is part of the value,
+    /// enumerate its contents explicitly rather than yielding a mutable collection.
+    /// </summary>
+    protected abstract IEnumerable<object?> GetEqualityComponents();
 
-    private int CachedHashCode
+    /// <inheritdoc />
+    public bool Equals(ValueObject? other)
     {
-        get
-        {
-            _cachedHashCode ??= GetPropertyValues()
-                .Aggregate(
-                    1,
-                    (current, obj) =>
-                    {
-                        unchecked
-                        {
-                            return current * 23 + (obj?.GetHashCode() ?? 0);
-                        }
-                    }
-                );
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
 
-            return _cachedHashCode.Value;
+        return other.GetType() == GetType() && EqualityComponents.SequenceEqual(other.EqualityComponents);
+    }
+
+    /// <summary>
+    /// Determines whether this value object is equal to another object.
+    /// </summary>
+    public sealed override bool Equals(object? obj) => obj is ValueObject other && Equals(other);
+
+    /// <summary>
+    /// Gets a hash code from the same ordered components used for equality.
+    /// </summary>
+    public sealed override int GetHashCode()
+    {
+        unchecked
+        {
+            var hashCode = 17;
+            foreach (var component in EqualityComponents)
+            {
+                hashCode = hashCode * 23 + (component?.GetHashCode() ?? 0);
+            }
+
+            return hashCode;
         }
     }
 
-    protected bool Equals(ValueObject other) => GetPropertyValues().SequenceEqual(other.GetPropertyValues());
+    private IEnumerable<object?> EqualityComponents =>
+        GetEqualityComponents() ?? throw new InvalidOperationException("Equality components cannot be null.");
 
-    private IEnumerable<object?> GetPropertyValues() =>
-        GetType()
-            .GetProperties()
-            .Select(
-                propertyInfo => propertyInfo
-                    .GetValue(this)
-            );
+    /// <summary>
+    /// Compares two value objects using their value equality.
+    /// </summary>
+    public static bool operator ==(ValueObject? left, ValueObject? right) => object.Equals(left, right);
 
-    public override bool Equals(object? obj)
-    {
-        if (obj is not ValueObject other) return false;
-        if (ReferenceEquals(this, other)) return true;
-
-        return other.GetType() == GetType() && Equals(other);
-    }
-
-    public override int GetHashCode() => CachedHashCode;
-
-    public static bool operator ==(ValueObject? left, ValueObject? right) => Equals(left, right);
-
-    public static bool operator !=(ValueObject? left, ValueObject? right) => !Equals(left, right);
+    /// <summary>
+    /// Compares two value objects using their value equality.
+    /// </summary>
+    public static bool operator !=(ValueObject? left, ValueObject? right) => !object.Equals(left, right);
 }

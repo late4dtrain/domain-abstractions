@@ -10,20 +10,36 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v4
             -   name: Setup .NET
-                uses: actions/setup-dotnet@v1
+                uses: actions/setup-dotnet@v4
                 with:
-                    dotnet-version: 6.0.x
+                    dotnet-version: 10.0.x
             -   name: Restore dependencies
-                run: dotnet restore
-            -   name: Create NuGet Package
-                run: dotnet pack -c Release /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/late4dtrain/domain-abstractions/releases/tag/${{ github.event.release.tag_name }}"
-            -   name: Archive NuGet Package
-                uses: actions/upload-artifact@v1
+                run: dotnet restore Late4dTrain.Domain.Abstractions.sln
+            -   name: Build
+                run: dotnet build Late4dTrain.Domain.Abstractions.sln --no-restore
+            -   name: Test
+                run: dotnet test Late4dTrain.Domain.Abstractions.sln --no-build --verbosity normal
+            -   name: Create runtime and analyzer packages
+                run: dotnet pack Late4dTrain.Domain.Abstractions.sln -c Release --no-restore /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/late4dtrain/domain-abstractions/releases/tag/${{ github.event.release.tag_name }}"
+            -   name: Restore analyzer consumer
+                run: dotnet restore samples/analyzer-consumer/AnalyzerConsumer.csproj -p:AnalyzerPackageVersion=${{ github.event.release.tag_name }} -p:RuntimePackageVersion=${{ github.event.release.tag_name }}
+            -   name: Build analyzer consumer
+                run: dotnet build samples/analyzer-consumer/AnalyzerConsumer.csproj --no-restore
+            -   name: Verify strict analyzer diagnostics
+                run: bash samples/analyzer-consumer/verify-strict.sh
+            -   name: Archive NuGet packages
+                uses: actions/upload-artifact@v4
                 with:
-                    name: Result
-                    path: ./Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ github.event.release.tag_name }}.nupkg
+                    name: NuGet packages
+                    path: |
+                        ./Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ github.event.release.tag_name }}.nupkg
+                        ./Late4dTrain.Domain.Abstractions.Analyzers/bin/Release/Late4dTrain.Domain.Abstractions.Analyzers.${{ github.event.release.tag_name }}.nupkg
 
             -   name: Publish NuGet Package
-                run: dotnet nuget push **/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+                env:
+                    NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+                run: |
+                    dotnet nuget push ./Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ github.event.release.tag_name }}.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
+                    dotnet nuget push ./Late4dTrain.Domain.Abstractions.Analyzers/bin/Release/Late4dTrain.Domain.Abstractions.Analyzers.${{ github.event.release.tag_name }}.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json

@@ -23,5 +23,6 @@
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\GUARANTEES.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

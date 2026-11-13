@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalyzerPackageVersion Condition="'$(AnalyzerPackageVersion)' == ''">0.0.1</AnalyzerPackageVersion>
+    <RuntimePackageVersion Condition="'$(RuntimePackageVersion)' == ''">0.0.1</RuntimePackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Late4dTrain.Domain.Abstractions.Analyzers" Version="$(AnalyzerPackageVersion)" />
+    <PackageReference Include="Late4dTrain.Domain.Abstractions" Version="$(RuntimePackageVersion)" />
+  </ItemGroup>
+</Project>

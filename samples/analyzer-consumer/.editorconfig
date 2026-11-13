@@ -1,0 +1,8 @@
+root = true
+
+[*.cs]
+dotnet_diagnostic.L4DA001.severity = error
+dotnet_diagnostic.L4DA002.severity = error
+dotnet_diagnostic.L4DA003.severity = error
+dotnet_diagnostic.L4DA004.severity = error
+dotnet_diagnostic.L4DA005.severity = error

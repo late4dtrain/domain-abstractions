@@ -2,9 +2,19 @@
 
 public abstract class DomainEvent : IDomainEvent
 {
-    #pragma warning disable ConvertToAutoProperty
-    private readonly DateTimeOffset _dateOccurred = DateTimeOffset.UtcNow;
+    /// <summary>
+    /// Creates an event with the current UTC time as its occurrence instant.
+    /// </summary>
+    protected DomainEvent() : this(DateTimeOffset.UtcNow)
+    {
+    }
 
-    public DateTimeOffset DateOccurred => _dateOccurred;
-    #pragma warning restore ConvertToAutoProperty
+    /// <summary>
+    /// Creates an event with an explicit occurrence instant.
+    /// </summary>
+    /// <param name="dateOccurred">The instant at which the event occurred.</param>
+    protected DomainEvent(DateTimeOffset dateOccurred) => DateOccurred = dateOccurred.ToUniversalTime();
+
+    /// <inheritdoc />
+    public DateTimeOffset DateOccurred { get; }
 }

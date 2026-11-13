@@ -3,15 +3,13 @@
 using System;
 
 internal class TestAggregateRoot
-    : AggregateRoot<Guid, DomainEvent>
+    : AggregateRoot<Guid>
 {
-    public TestAggregateRoot(Guid id, string name)
+    public TestAggregateRoot(Guid id, string name) : base(id)
     {
-        (Id, Name) = (id, name);
-        Events.Add(new TestAggregateCreated());
+        Name = name;
+        RaiseDomainEvent(new TestAggregateCreated());
     }
 
     public string Name { get; }
-
-    public sealed override Guid Id { get; protected set; }
 }
