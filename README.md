@@ -52,11 +52,11 @@ Aggregates record events through protected `RaiseDomainEvent`. Infrastructure ca
 `DomainEvent` captures its occurrence time once. Derive events can use the protected timestamp constructor when replaying or testing historical facts; supplied offsets are normalized to UTC. Dispatch is an application/infrastructure concern: coordinate event publication with persistence (often through an outbox) when consistency matters. Domain events are not automatically integration messages or event-sourcing records.
 In this example, `Customer` is an aggregate root with a `Guid` identity. Creating it records a `CustomerCreated` fact in its pending events.
 
-The test project contains a compiled [reference `Order` domain](Late4dTrain.Domain.Abstractions.Tests/ReferenceDomain/Order.cs) demonstrating typed identities, immutable `Money`, owned line items, and invariant-checked operations. It is illustrative, not a required modeling template.
+The test project contains a compiled [reference `Order` domain](src/Late4dTrain.Domain.Abstractions.Tests/ReferenceDomain/Order.cs) demonstrating typed identities, immutable `Money`, owned line items, and invariant-checked operations. It is illustrative, not a required modeling template.
 
 ### Optional analyzers
 
-Consumers can install `Late4dTrain.Domain.Abstractions.Analyzers` for opt-in warnings on writable value-object/event state, mutable entity identity, mutable aggregate collection exposure, and marker-only value objects without equality. Rules are warnings by default; see the [analyzer guide](Late4dTrain.Domain.Abstractions.Analyzers/README.md) for diagnostic IDs and a strict `.editorconfig` profile. The runtime package does not depend on Roslyn.
+Consumers can install `Late4dTrain.Domain.Abstractions.Analyzers` for opt-in warnings on writable value-object/event state, mutable entity identity, mutable aggregate collection exposure, and marker-only value objects without equality. Rules are warnings by default; see the [analyzer guide](src/Late4dTrain.Domain.Abstractions.Analyzers/README.md) for diagnostic IDs and a strict `.editorconfig` profile. The runtime package does not depend on Roslyn.
 
 ### Optional repository port
 

@@ -18,13 +18,13 @@ jobs:
                 with:
                     dotnet-version: 10.0.x
             -   name: Restore dependencies
-                run: dotnet restore
+                run: dotnet restore Late4dTrain.Domain.Abstractions.slnx
             -   name: Build
-                run: dotnet build --no-restore
+                run: dotnet build Late4dTrain.Domain.Abstractions.slnx --no-restore
             -   name: Test
-                run: dotnet test --no-build --verbosity normal
+                run: dotnet test Late4dTrain.Domain.Abstractions.slnx --no-build --verbosity normal
             -   name: Pack runtime and analyzer packages
-                run: dotnet pack Late4dTrain.Domain.Abstractions.sln -c Release --no-restore
+                run: dotnet pack Late4dTrain.Domain.Abstractions.slnx -c Release --no-restore
             -   name: Restore analyzer consumer
                 run: dotnet restore samples/analyzer-consumer/AnalyzerConsumer.csproj
             -   name: Build analyzer consumer

@@ -1,4 +1,4 @@
-﻿name: Release to Nuget
+name: Release to Nuget
 
 on:
     release:
@@ -6,25 +6,34 @@ on:
 
 jobs:
     build:
-
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write
 
         steps:
             -   uses: actions/checkout@v4
+            -   name: Normalize package version
+                id: version
+                env:
+                    RELEASE_TAG: ${{ github.event.release.tag_name }}
+                run: echo "package_version=${RELEASE_TAG#v}" >> "$GITHUB_OUTPUT"
             -   name: Setup .NET
                 uses: actions/setup-dotnet@v4
                 with:
                     dotnet-version: 10.0.x
             -   name: Restore dependencies
-                run: dotnet restore Late4dTrain.Domain.Abstractions.sln
+                run: dotnet restore Late4dTrain.Domain.Abstractions.slnx
             -   name: Build
-                run: dotnet build Late4dTrain.Domain.Abstractions.sln --no-restore
+                run: dotnet build Late4dTrain.Domain.Abstractions.slnx --no-restore
             -   name: Test
-                run: dotnet test Late4dTrain.Domain.Abstractions.sln --no-build --verbosity normal
+                run: dotnet test Late4dTrain.Domain.Abstractions.slnx --no-build --verbosity normal
             -   name: Create runtime and analyzer packages
-                run: dotnet pack Late4dTrain.Domain.Abstractions.sln -c Release --no-restore /p:Version=${{ github.event.release.tag_name }} /p:PackageReleaseNotes="See https://github.com/late4dtrain/domain-abstractions/releases/tag/${{ github.event.release.tag_name }}"
+                env:
+                    RELEASE_TAG: ${{ github.event.release.tag_name }}
+                run: dotnet pack Late4dTrain.Domain.Abstractions.slnx -c Release --no-restore /p:Version=${{ steps.version.outputs.package_version }} /p:PackageReleaseNotes="See https://github.com/late4dtrain/domain-abstractions/releases/tag/${RELEASE_TAG}"
             -   name: Restore analyzer consumer
-                run: dotnet restore samples/analyzer-consumer/AnalyzerConsumer.csproj -p:AnalyzerPackageVersion=${{ github.event.release.tag_name }} -p:RuntimePackageVersion=${{ github.event.release.tag_name }}
+                run: dotnet restore samples/analyzer-consumer/AnalyzerConsumer.csproj -p:AnalyzerPackageVersion=${{ steps.version.outputs.package_version }} -p:RuntimePackageVersion=${{ steps.version.outputs.package_version }}
             -   name: Build analyzer consumer
                 run: dotnet build samples/analyzer-consumer/AnalyzerConsumer.csproj --no-restore
             -   name: Verify strict analyzer diagnostics
@@ -34,12 +43,12 @@ jobs:
                 with:
                     name: NuGet packages
                     path: |
-                        ./Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ github.event.release.tag_name }}.nupkg
-                        ./Late4dTrain.Domain.Abstractions.Analyzers/bin/Release/Late4dTrain.Domain.Abstractions.Analyzers.${{ github.event.release.tag_name }}.nupkg
-
-            -   name: Publish NuGet Package
-                env:
-                    NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-                run: |
-                    dotnet nuget push ./Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ github.event.release.tag_name }}.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
-                    dotnet nuget push ./Late4dTrain.Domain.Abstractions.Analyzers/bin/Release/Late4dTrain.Domain.Abstractions.Analyzers.${{ github.event.release.tag_name }}.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json
+                        ./src/Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ steps.version.outputs.package_version }}.nupkg
+                        ./src/Late4dTrain.Domain.Abstractions.Analyzers/bin/Release/Late4dTrain.Domain.Abstractions.Analyzers.${{ steps.version.outputs.package_version }}.nupkg
+            -   name: Authenticate to NuGet.org
+                id: nuget-login
+                uses: NuGet/login@v1
+                with:
+                    user: gsoulavy
+            -   name: Publish runtime NuGet package
+                run: dotnet nuget push ./src/Late4dTrain.Domain.Abstractions/bin/Release/Late4dTrain.Domain.Abstractions.${{ steps.version.outputs.package_version }}.nupkg --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json

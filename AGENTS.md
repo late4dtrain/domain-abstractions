@@ -14,15 +14,15 @@
 - Run from the repository root, in CI order:
 
   ```sh
-  dotnet restore Late4dTrain.Domain.Abstractions.sln
-  dotnet build Late4dTrain.Domain.Abstractions.sln --no-restore
-  dotnet test Late4dTrain.Domain.Abstractions.sln --no-build --verbosity normal
+  dotnet restore Late4dTrain.Domain.Abstractions.slnx
+  dotnet build Late4dTrain.Domain.Abstractions.slnx --no-restore
+  dotnet test Late4dTrain.Domain.Abstractions.slnx --no-build --verbosity normal
   ```
 
 - Focused test after building: `dotnet test Late4dTrain.Domain.Abstractions.Tests --no-build --filter "FullyQualifiedName~After_TestAggregateRoot_Is_Created_DomainEvent_Is_Added"`. Both Entity and ValueObject suites have an `EqualityTests` class; qualify the namespace when filtering them.
 - Tests use xUnit 2, BDDfy, AutoFixture `[AutoData]`, and FluentAssertions; follow `Entity/DomainEventTests.cs` for BDDfy and place fixtures in each suite's `Data/`. The `Tests.ValueObject` namespace shadows the library type, so fixtures use `using ValueObject = Abstractions.ValueObject;`.
-- Formatting check after restore: `dotnet format Late4dTrain.Domain.Abstractions.sln --verify-no-changes --no-restore`. Existing files have whitespace, CRLF and BOM drift against `.editorconfig`; use `--include <changed.cs>` for focused checks rather than reformatting the repository incidentally.
-- Local packaging: `dotnet pack Late4dTrain.Domain.Abstractions.sln -c Release`; inspect both runtime and analyzer `.nupkg` contents and build `samples/analyzer-consumer` against the local analyzer feed. The runtime package embeds `README.md` and `GUARANTEES.md`. `.github/workflows/release.yml` overrides package `Version` with the published release tag, not the checked-in `0.0.1`.
+- Formatting check after restore: `dotnet format Late4dTrain.Domain.Abstractions.slnx --verify-no-changes --no-restore`. Existing files have whitespace, CRLF and BOM drift against `.editorconfig`; use `--include <changed.cs>` for focused checks rather than reformatting the repository incidentally.
+- Local packaging: `dotnet pack Late4dTrain.Domain.Abstractions.slnx -c Release`; inspect both runtime and analyzer `.nupkg` contents and build `samples/analyzer-consumer` against the local analyzer feed. The runtime package embeds `README.md` and `GUARANTEES.md`. `.github/workflows/release.yml` overrides package `Version` with the published release tag, not the checked-in `0.0.1`.
 
 ## OpenCode
 

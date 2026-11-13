@@ -4,11 +4,11 @@ Status: approved and implemented. Reviewed against HEAD `547ff3c47986542b1a5ca30
 
 ## Findings
 
-- `Late4dTrain.Domain.Abstractions/ValueObject.cs:18-42`: cached hashes can disagree with equality when properties change. Reflection also includes static/computed properties, can throw for indexers, and compares collections according to their own equality rather than by elements.
-- `Late4dTrain.Domain.Abstractions/AggregateRoot.cs:7-9`: the public mutable event list permits callers to add, remove, reorder, or clear events outside domain operations.
-- `Late4dTrain.Domain.Abstractions/Entity.cs:9-21`: identity can change, invalidating hash-collection membership; two same-type entities with default IDs compare equal, even if consumers mean “unassigned.” Default values are not universally invalid, so the policy must be explicit.
-- `Late4dTrain.Domain.Abstractions/IAggregateRoot.cs:3-5`: the contract is tied to an event type rather than expressing an identity-bearing aggregate boundary.
-- `Late4dTrain.Domain.Abstractions.Tests/Entity/EqualityTests.cs:40,76`: unequal entities are incorrectly required to have unequal hashes, although collisions are legal.
+- `src/Late4dTrain.Domain.Abstractions/ValueObject.cs:18-42`: cached hashes can disagree with equality when properties change. Reflection also includes static/computed properties, can throw for indexers, and compares collections according to their own equality rather than by elements.
+- `src/Late4dTrain.Domain.Abstractions/AggregateRoot.cs:7-9`: the public mutable event list permits callers to add, remove, reorder, or clear events outside domain operations.
+- `src/Late4dTrain.Domain.Abstractions/Entity.cs:9-21`: identity can change, invalidating hash-collection membership; two same-type entities with default IDs compare equal, even if consumers mean “unassigned.” Default values are not universally invalid, so the policy must be explicit.
+- `src/Late4dTrain.Domain.Abstractions/IAggregateRoot.cs:3-5`: the contract is tied to an event type rather than expressing an identity-bearing aggregate boundary.
+- `src/Late4dTrain.Domain.Abstractions.Tests/Entity/EqualityTests.cs:40,76`: unequal entities are incorrectly required to have unequal hashes, although collisions are legal.
 - `README.md:22-32,67-73`: the aggregate example lacks the required `Id` override; implementing `IValueObject` alone does not supply value equality.
 - `DomainEvent` has no explicit occurrence-time constructor. There are no invariant-focused consumer examples or structural enforcement tools.
 
@@ -35,8 +35,8 @@ Complete each increment and its verification before starting the next. The core 
 
 - Keep the library on `netstandard2.0` and C# 10 unless a later approved scope changes them. Tests use .NET 10, xUnit, BDDfy, AutoFixture/AutoData, and FluentAssertions.
 - Preserve existing uncommitted work; ask before unsafe branching. Do not commit, publish, or discard changes without authorization.
-- From the repository root run `dotnet restore Late4dTrain.Domain.Abstractions.sln`, `dotnet build Late4dTrain.Domain.Abstractions.sln --no-restore`, then `dotnet test Late4dTrain.Domain.Abstractions.sln --no-build --verbosity normal`.
-- Use focused test filters while developing. Run `dotnet format Late4dTrain.Domain.Abstractions.sln --verify-no-changes --no-restore --include <changed-csharp-files>`; report existing unrelated formatting drift separately.
+- From the repository root run `dotnet restore Late4dTrain.Domain.Abstractions.slnx`, `dotnet build Late4dTrain.Domain.Abstractions.slnx --no-restore`, then `dotnet test Late4dTrain.Domain.Abstractions.slnx --no-build --verbosity normal`.
+- Use focused test filters while developing. Run `dotnet format Late4dTrain.Domain.Abstractions.slnx --verify-no-changes --no-restore --include <changed-csharp-files>`; report existing unrelated formatting drift separately.
 - Track acceptance criteria and actual verification in each plan. Do not claim that a passing baseline proves unimplemented behavior.
 
 ## References

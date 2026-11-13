@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="src/Late4dTrain.Domain.Abstractions.Analyzers/Late4dTrain.Domain.Abstractions.Analyzers.csproj" />
+  <Project Path="src/Late4dTrain.Domain.Abstractions.Tests/Late4dTrain.Domain.Abstractions.Tests.csproj" />
+  <Project Path="src/Late4dTrain.Domain.Abstractions/Late4dTrain.Domain.Abstractions.csproj" />
+</Solution>
